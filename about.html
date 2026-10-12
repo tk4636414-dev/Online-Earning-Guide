@@ -1,0 +1,120 @@
+t <!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ہم بارے میں | آن لائن ارننگ گائیڈ</title>
+    <meta name="description" content="آن لائن ارننگ گائیڈ کے مقصد، تعلیمی مواد اور آن لائن کام کے بارے میں ہماری رہنمائی جانیں۔">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="glass-header">
+        <a class="logo" href="/">
+            <img src="https://i.ibb.co/8ndQzzL6/logo.png" alt="Online Earning Guide Logo">
+            <span class="brand-title">آن لائن ارننگ گائیڈ PK</span>
+        </a>
+        <button id="menuToggle" class="menu-toggle" type="button" aria-label="مینو کھولیں" aria-controls="siteNavigation" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="siteNavigation" class="nav-links">
+            <button class="nav-drawer-close" type="button" aria-label="مینو بند کریں">✕</button>
+            <div class="primary-links">
+                <a href="index.html">ہوم</a>
+                <a href="about.html" class="active">ہم بارے میں</a>
+                <a href="contact.html">رابطہ</a>
+            </div>
+            <div class="header-actions">
+              <div class="translator-container">
+                <select id="languageSelect" onchange="changeLanguage(this)" aria-label="زبان منتخب کریں">
+                    <option value="ur">اردو (Urdu)</option>
+                    <option value="en">English</option>
+                </select>
+                <div id="google_translate_element" style="display: none;"></div>
+              </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <section class="hero-section">
+            <div class="hero-badge">✨ ہماری شناخت اور مشن</div>
+            <h1 class="main-title">ہماری ویب سائٹ کے بارے میں</h1>
+            <p class="hero-subtitle">تعلیمی، معلوماتی، اور عملی محتوا فراہم کرنے کے لیے ہماری مشن</p>
+        </section>
+
+        <section class="page-card">
+            <div class="page-section">
+                <h2>ہم کیا ہیں؟</h2>
+                <p>آن لائن ارننگ گائیڈ ایک معلوماتی اور تعلیمی ویب سائٹ ہے جو صارفین کو گھر بیٹھے آن لائن کمائی، فری لانسنگ، کاروباری سیکھنے، اور ڈیجیٹل مہارتوں کے بارے میں آسان، عملی، اور قابلِ اعتماد گائیڈ فراہم کرتی ہے۔</p>
+            </div>
+
+            <div class="page-section">
+                <h2>ہماری mission</h2>
+                <p>ہماری بنیادی مقصد لوگوں کو جدید دنیا کے ڈجیٹل روزگار، کاروبار اور ہنر سکھانا ہے تاکہ وہ خود اعتماد، عملی معلومات، اور کامیابی کے مواقع پیدا کر سکیں۔</p>
+            </div>
+
+            <div class="page-section">
+                <h2>ہم کیا فراہم کرتے ہیں؟</h2>
+                <ul class="page-list">
+                    <li>تفصیلی آرٹیکلز اور ماسٹر گائیڈز</li>
+                    <li>مکمل مراحل پر مبنی نفاذی طریقے</li>
+                    <li>لوکل اور انٹرنیٹ مارکیٹ کے لیے عملی مشورے</li>
+                    <li>عوامی تعلیم اور ڈیجیٹل ہنری تنظیم کے لیے مدد</li>
+                </ul>
+            </div>
+
+            <div class="page-section">
+                <h2>ہماری وژن</h2>
+                <p>ہم چاہتے ہیں کہ ہر صارف اپنی صلاحیتوں کو بہتر کرے، زیادہ جانیئے، اور ہندوستان/پاکستان جیسے مارکیٹ میں اپنے لیے مناسب رہنما اصول بنائے۔</p>
+            </div>
+        </section>
+    </main>
+
+    <aside class="adsense-box" aria-label="Advertisement placeholder"></aside>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 آن لائن ارننگ گائیڈ. جملہ حقوق محفوظ ہیں۔</p>
+        <nav class="footer-links" aria-label="قانونی معلومات">
+            <a href="disclaimer.html">ڈس کلیمر</a>
+            <a href="terms.html">شرائط و ضوابط</a>
+            <a href="privacy.html">پرائیویسی پالیسی</a>
+        </nav>
+    </footer>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            if (window.google && window.google.translate) {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'ur',
+                    includedLanguages: 'ur,en',
+                    autoDisplay: false
+                }, 'google_translate_element');
+            }
+        }
+
+        function changeLanguage(selectObj) {
+            const lang = selectObj.value;
+            const frame = document.querySelector('.goog-te-combo');
+            if (frame) {
+                frame.value = lang;
+                frame.dispatchEvent(new Event('change'));
+            } else {
+                const currentTranslation = document.cookie
+                    .split('; ')
+                    .find(cookie => cookie.startsWith('googtrans='))
+                    ?.split('=')[1] || '';
+                const nextTranslation = `/ur/${lang}`;
+                if (currentTranslation === nextTranslation) return;
+                document.cookie = `googtrans=${nextTranslation}; path=/`;
+                window.location.reload();
+            }
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
+    <script type="module" src="script.js"></script>
+    <script src="site-language.js"></script>
+</body>
+</html>

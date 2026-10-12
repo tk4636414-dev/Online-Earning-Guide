@@ -1,0 +1,165 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    match /articles/{articleId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read: if (signedIn() && request.auth.uid == userId) || isAdmin();
+      allow create: if isAdmin()
+        || (signedIn()
+          && request.auth.uid == userId
+          && request.resource.data.keys().hasOnly(['uid', 'email', 'displayName', 'createdAt', 'updatedAt'])
+          && request.resource.data.uid == userId
+          && request.resource.data.email == request.auth.token.email
+          && request.resource.data.updatedAt is timestamp
+          && (!('createdAt' in request.resource.data) || request.resource.data.createdAt is timestamp));
+      allow update: if (isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'isPremium', 'subscription', 'subscriptionEndsAt', 'subscriptionDays',
+          'subscriptionUpdatedAt', 'jazzCashTid', 'amountPaid', 'discountAmount',
+          'accessDisabled', 'plan', 'lemonVariantId', 'lemonOrderId', 'updatedAt'
+        ])
+        && (!('isPremium' in request.resource.data) || request.resource.data.isPremium is bool)
+        && (!('subscription' in request.resource.data) || request.resource.data.subscription in ['active', 'expired'])
+        && (!('subscriptionEndsAt' in request.resource.data) || request.resource.data.subscriptionEndsAt is timestamp)
+        && (!('subscriptionDays' in request.resource.data) || (request.resource.data.subscriptionDays is number && request.resource.data.subscriptionDays >= 1 && request.resource.data.subscriptionDays <= 1095))
+        && (!('jazzCashTid' in request.resource.data) || (request.resource.data.jazzCashTid is string && request.resource.data.jazzCashTid.size() <= 100))
+        && (!('amountPaid' in request.resource.data) || (request.resource.data.amountPaid is number && request.resource.data.amountPaid >= 0 && request.resource.data.amountPaid <= 10000000))
+        && (!('discountAmount' in request.resource.data) || (request.resource.data.discountAmount is number && request.resource.data.discountAmount >= 0 && request.resource.data.discountAmount <= 10000000))
+        && (!('accessDisabled' in request.resource.data) || request.resource.data.accessDisabled is bool)
+        && (!('plan' in request.resource.data) || (request.resource.data.plan is string && request.resource.data.plan.size() <= 40))
+        && (!('lemonVariantId' in request.resource.data) || (request.resource.data.lemonVariantId is string && request.resource.data.lemonVariantId.size() <= 80))
+        && (!('lemonOrderId' in request.resource.data) || (request.resource.data.lemonOrderId is string && request.resource.data.lemonOrderId.size() <= 120))
+        && (!('updatedAt' in request.resource.data) || request.resource.data.updatedAt is timestamp)
+        && (!('subscriptionUpdatedAt' in request.resource.data) || request.resource.data.subscriptionUpdatedAt is timestamp))
+        || (signedIn()
+          && request.auth.uid == userId
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['uid', 'email', 'displayName', 'createdAt', 'updatedAt'])
+          && request.resource.data.uid == userId
+          && request.resource.data.email == request.auth.token.email);
+      allow delete: if isAdmin();
+    }
+
+    match /subscriptionRequests/{requestId} {
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly([
+          'uid', 'email', 'plan', 'paymentMethod', 'transactionId', 'currency', 'status', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'uid', 'email', 'plan', 'paymentMethod', 'transactionId', 'currency', 'status', 'createdAt'
+        ])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.plan in ['weekly', 'monthly', 'annual']
+        && request.resource.data.paymentMethod in ['JazzCash', 'EasyPaisa']
+        && request.resource.data.transactionId is string
+        && request.resource.data.transactionId.size() > 0
+        && request.resource.data.transactionId.size() <= 100
+        && request.resource.data.currency == 'PKR'
+        && request.resource.data.status == 'pending'
+        && request.resource.data.createdAt is timestamp;
+      allow read, delete: if isAdmin();
+      allow update: if false;
+    }
+
+    match /messages/{messageId} {
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly([
+          'recipientId', 'recipientEmail', 'subject', 'message', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'recipientId', 'recipientEmail', 'subject', 'message', 'createdAt'
+        ])
+        && request.resource.data.recipientId is string
+        && request.resource.data.recipientEmail is string
+        && request.resource.data.subject is string
+        && request.resource.data.message is string
+        && request.resource.data.createdAt is timestamp;
+      allow read: if isAdmin()
+        || (signedIn()
+          && (resource.data.recipientId == request.auth.uid
+            || resource.data.recipientEmail == request.auth.token.email));
+      allow update, delete: if isAdmin();
+    }
+
+    match /audit_trail/{eventId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly([
+          'action', 'detail', 'actorUid', 'actorEmail', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'action', 'detail', 'actorUid', 'actorEmail', 'createdAt'
+        ])
+        && request.resource.data.actorUid == request.auth.uid
+        && request.resource.data.createdAt is timestamp;
+      allow update, delete: if false;
+    }
+
+    match /user_tasks/{taskId} {
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly([
+          'userEmail', 'taskMessage', 'rewardLabel', 'status', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'userEmail', 'taskMessage', 'rewardLabel', 'status', 'createdAt'
+        ])
+        && request.resource.data.userEmail is string
+        && request.resource.data.taskMessage is string
+        && request.resource.data.rewardLabel is string
+        && request.resource.data.status == 'pending'
+        && request.resource.data.createdAt is timestamp;
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userEmail == request.auth.token.email);
+      allow update, delete: if isAdmin();
+    }
+
+    match /presence/{userId} {
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == userId);
+      allow create, update: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasOnly(['uid', 'email', 'displayName', 'role', 'lastSeen'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.role == 'user'
+        && request.resource.data.lastSeen is timestamp;
+      allow delete: if isAdmin();
+    }
+
+    match /siteVisits/{visitId} {
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly(['path', 'createdAt'])
+        && request.resource.data.keys().hasAll(['path', 'createdAt'])
+        && request.resource.data.path is string
+        && request.resource.data.path.size() > 0
+        && request.resource.data.path.size() <= 300
+        && request.resource.data.createdAt is timestamp;
+      allow read: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

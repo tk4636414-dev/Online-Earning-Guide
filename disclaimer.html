@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ڈیاس کلیمر | آن لائن ارننگ گائیڈ</title>
+    <meta name="description" content="آن لائن کمائی اور فری لانسنگ کے تعلیمی مواد سے متعلق اہم معلومات اور ڈس کلیمر۔">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="glass-header">
+        <a class="logo" href="/">
+            <img src="https://i.ibb.co/8ndQzzL6/logo.png" alt="Online Earning Guide Logo">
+            <span class="brand-title">آن لائن ارننگ گائیڈ PK</span>
+        </a>
+        <button id="menuToggle" class="menu-toggle" type="button" aria-label="مینو کھولیں" aria-controls="siteNavigation" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="siteNavigation" class="nav-links">
+            <button class="nav-drawer-close" type="button" aria-label="مینو بند کریں">✕</button>
+            <div class="primary-links">
+                <a href="index.html">ہوم</a>
+                <a href="about.html">ہم بارے میں</a>
+                <a href="contact.html">رابطہ</a>
+            </div>
+            <div class="header-actions">
+              <div class="translator-container">
+                <select id="languageSelect" onchange="changeLanguage(this)" aria-label="زبان منتخب کریں">
+                    <option value="ur">اردو (Urdu)</option>
+                    <option value="en">English</option>
+                </select>
+                <div id="google_translate_element" style="display: none;"></div>
+              </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <section class="hero-section">
+            <div class="hero-badge">⚠️ واضح ڈیاس کلیمر</div>
+            <h1 class="main-title">ڈیاس کلیمر</h1>
+            <p class="hero-subtitle">معلوماتی اور تعلیمی مقاصد کے لیے موزوں مواد</p>
+        </section>
+
+        <section class="page-card">
+            <div class="page-section">
+                <h2>تعریف</h2>
+                <p>اس ویب سائٹ پر موجود تمام معلومات صرف تعلیمی، معلوماتی، اور عمومی رہنمائی کے مقاصد کے لیے فراہم کی جاتی ہیں۔ یہ معلومات کسی بھی صورت میں قانونی، مالیاتی، سرمایہ کاری، یا پیشہ ورانہ مشاورت کے طور پر نہیں دی جاتی۔</p>
+            </div>
+
+            <div class="page-section">
+                <h2>مسئلہ</h2>
+                <p>ہم اس بات کو یقینی بنانے کی پوری کوشش کرتے ہیں کہ مواد درست، جدید، اور مفید ہو، مگر ہم کسی بھی نقصان، غلطی، یا غیر یقینی نتیجہ کے لیے ذمہ دار نہیں ہوں گے۔</p>
+            </div>
+
+            <div class="page-section">
+                <h2>استعمال کے لیے مشورہ</h2>
+                <p>صارفین کو مشورہ دیا جاتا ہے کہ وہ کسی بھی فیصلہ، سرمایہ کاری، یا کاروباری اقدام سے پہلے اپنی اپنی تحقیق کریں، ماہرین سے مشاورت کریں، اور اپنی ذمہ داری کے مطابق عمل کریں۔</p>
+            </div>
+        </section>
+    </main>
+
+    <aside class="adsense-box" aria-label="Advertisement placeholder"></aside>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 آن لائن ارننگ گائیڈ. جملہ حقوق محفوظ ہیں۔</p>
+        <nav class="footer-links" aria-label="قانونی معلومات">
+            <a href="disclaimer.html" aria-current="page">ڈس کلیمر</a>
+            <a href="terms.html">شرائط و ضوابط</a>
+            <a href="privacy.html">پرائیویسی پالیسی</a>
+        </nav>
+    </footer>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            if (window.google && window.google.translate) {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'ur',
+                    includedLanguages: 'ur,en',
+                    autoDisplay: false
+                }, 'google_translate_element');
+            }
+        }
+
+        function changeLanguage(selectObj) {
+            const lang = selectObj.value;
+            const frame = document.querySelector('.goog-te-combo');
+            if (frame) {
+                frame.value = lang;
+                frame.dispatchEvent(new Event('change'));
+            } else {
+                const currentTranslation = document.cookie
+                    .split('; ')
+                    .find(cookie => cookie.startsWith('googtrans='))
+                    ?.split('=')[1] || '';
+                const nextTranslation = `/ur/${lang}`;
+                if (currentTranslation === nextTranslation) return;
+                document.cookie = `googtrans=${nextTranslation}; path=/`;
+                window.location.reload();
+            }
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
+    <script src="site-language.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

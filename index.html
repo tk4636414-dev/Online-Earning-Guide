@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>آن لائن ارننگ اور فری لانسنگ - ماسٹر گائیڈ PK</title>
+    <meta name="description" content="فری لانسنگ، ڈیجیٹل اسکلز اور آن لائن کمائی کے مستند طریقوں پر اردو میں عملی رہنمائی۔">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="آن لائن ارننگ گائیڈ">
+    <meta property="og:title" content="آن لائن ارننگ اور فری لانسنگ - ماسٹر گائیڈ PK">
+    <meta property="og:description" content="فری لانسنگ، ڈیجیٹل اسکلز اور آن لائن کمائی کے مستند طریقوں پر اردو میں عملی رہنمائی۔">
+    <meta property="og:locale" content="ur_PK">
+
+    <!-- Urdu + UI Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+   <!-- Header -->
+    <header class="glass-header">
+
+        <a class="logo" href="/">
+            <img src="https://i.ibb.co/8ndQzzL6/logo.png" alt="Online Earning Guide Logo">
+            <span class="brand-title">آن لائن ارننگ گائیڈ PK</span>
+        </a>
+
+        <button
+            id="menuToggle"
+            class="menu-toggle"
+            type="button"
+            aria-label="مینو کھولیں"
+            aria-controls="siteNavigation"
+            aria-expanded="false"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav id="siteNavigation" class="nav-links">
+            <button class="nav-drawer-close" type="button" aria-label="مینو بند کریں">✕</button>
+            <div class="primary-links">
+                <a href="index.html" class="active">ہوم</a>
+                <a href="about.html">ہمارے بارے میں</a>
+                <a href="contact.html">رابطہ</a>
+            </div>
+            <div class="header-actions">
+                <div id="auth-container">
+                    <span id="userEmail"></span>
+                    <button id="loginBtn" class="action-btn" type="button">گوگل سے لاگ ان کریں</button>
+                    <button id="logoutBtn" class="action-btn" type="button" hidden>لاگ آؤٹ</button>
+                </div>
+                <button
+                    id="upgradeBtn"
+                    class="upgrade-btn"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="subscription-modal"
+                >
+                    پریمیئم حاصل کریں
+                </button>
+                <div class="translator-container">
+                    <select id="languageSelect" onchange="changeLanguage(this)" aria-label="زبان منتخب کریں">
+                        <option value="ur">اردو</option>
+                        <option value="en">English</option>
+                    </select>
+                    <div id="google_translate_element" style="display:none;"></div>
+                </div>
+            </div>
+        </nav>
+
+    </header>
+
+   <!-- Premium Subscription Modal -->
+    <div
+        id="subscription-modal"
+        class="subscription-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="subscription-title"
+        hidden
+    >
+        <div class="subscription-box">
+            <button
+                id="subscription-close-btn"
+                class="subscription-close-btn"
+                type="button"
+                aria-label="سبسکرپشن ونڈو بند کریں"
+            >
+                &times;
+            </button>
+
+            <div class="subscription-card">
+                <span class="subscription-badge">پریمیئم پلان</span>
+                <h2 id="subscription-title">اپنی AI سہولیات اپ گریڈ کریں</h2>
+                <p id="subscription-price-display" class="subscription-price-display">قیمتیں لوڈ ہو رہی ہیں...</p>
+                
+                <div class="subscription-plans">
+                    <!-- Weekly Plan -->
+                    <div class="subscription-plan" data-checkout-plan="weekly">
+                        <strong data-price="weekly">$2.99</strong>
+                        <span>Weekly / ہفتہ وار</span>
+                        <div class="plan-actions">
+                            <a class="plan-btn card-pay-btn" href="#" data-checkout-plan="weekly">💳 Pay with Card</a>
+                            <button type="button" class="plan-btn jazzcash-pay-btn" onclick="openManualPayment('weekly')">📱 JazzCash / EasyPaisa</button>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Plan (Featured) -->
+                    <div class="subscription-plan subscription-plan-featured" data-checkout-plan="monthly">
+                        <strong data-price="monthly">$9.99</strong>
+                        <span>Monthly / ماہانہ</span>
+                        <div class="plan-actions">
+                            <a class="plan-btn card-pay-btn" href="#" data-checkout-plan="monthly">💳 Pay with Card</a>
+                            <button type="button" class="plan-btn jazzcash-pay-btn" onclick="openManualPayment('monthly')">📱 JazzCash / EasyPaisa</button>
+                        </div>
+                    </div>
+
+                    <!-- Annual Plan -->
+                    <div class="subscription-plan" data-checkout-plan="annual">
+                        <strong data-price="annual">$79.99</strong>
+                        <span>Annual / سالانہ</span>
+                        <div class="plan-actions">
+                            <a class="plan-btn card-pay-btn" href="#" data-checkout-plan="annual">💳 Pay with Card</a>
+                            <button type="button" class="plan-btn jazzcash-pay-btn" onclick="openManualPayment('annual')">📱 JazzCash / EasyPaisa</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Payment Form with Number -->
+                <form id="manual-payment-form" class="manual-payment-form" hidden>
+                    <h3>JazzCash / EasyPaisa Manual Payment</h3>
+                    <p style="background: rgba(0, 255, 204, 0.1); padding: 10px; border-radius: 6px; border: 1px dashed #00ffcc;">
+                        براہ کرم اس نمبر پر پیمنٹ کریں:<br>
+                        <strong style="color: #00ffcc; font-size: 1.2rem;">03248459798</strong>
+                    </p>
+                    <p>پیسے بھیجنے کے بعد اپنی Gmail اور TrxID درج کریں۔</p>
+                    <label>Login Gmail<input id="payment-email" type="email" required autocomplete="email"></label>
+                    <label>Plan<select id="payment-plan" required><option value="weekly">Weekly · 850 PKR</option><option value="monthly">Monthly · 1,500 PKR</option><option value="annual">Annual · 14,400 PKR</option></select></label>
+                    <label>Payment method<select id="payment-method" required><option value="JazzCash">JazzCash</option><option value="EasyPaisa">EasyPaisa</option></select></label>
+                    <label>Transaction ID (TrxID)<input id="payment-transaction-id" maxlength="100" required></label>
+                    <button class="manual-payment-submit" type="submit">Submit payment request</button>
+                    <p id="payment-status" class="payment-status" role="status"></p>
+                </form>
+<ul class="subscription-benefits">
+    <li>✔️ پریمیم صارفین کے لیے روزانہ 200 اے آئی سوالات کی سہولت</li>
+    <li>✔️ تمام مفت سوالات کی حد (5-question limit) مکمل ختم</li>
+    <li>✔️ 1000 الفاظ تک طویل اے آئی جوابات اور وائس ایکسیس</li>
+    <li>✔️ ہر نئے اور جدید آن لائن ارننگ میتھڈ کی اپ ڈیٹ سب سے پہلے ملے گی</li>
+    <li>✔️ کسی بھی سوال یا مسئلے کے حل کے لیے وی آئی پی کسٹمر سپورٹ</li>
+</ul>
+            </div>
+        </div>
+    </div>
+    <!-- Main -->
+    <main class="main-container">
+
+        <!-- Hero -->
+        <section class="hero-section">
+
+            <div class="hero-badge">
+                ✨ پروفیشنل آن لائن کمائی گائیڈ
+            </div>
+
+            <h1 class="main-title">
+                آن لائن ارننگ اور فری لانسنگ - ماسٹر گائیڈ PK
+            </h1>
+
+            <p class="hero-subtitle">
+                گھر بیٹھے انٹرنیٹ سے کمانے کے جدید ترین اور مستند طریقے دریافت کریں
+            </p>
+
+        </section>
+
+
+        <!-- Articles -->
+        <div id="cards-grid" class="cards-grid">
+            <!-- Cards JavaScript سے یہاں آئیں گے -->
+        </div>
+
+    </main>
+
+
+    <!-- Article Modal -->
+    <div
+        id="articleModal"
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+    >
+
+        <div class="modal-container">
+
+            <button
+                class="close-btn"
+                onclick="closeModal()"
+                aria-label="بند کریں"
+            >
+                &times;
+            </button>
+
+            <div class="modal-header">
+
+                <h2 id="modalTitle"></h2>
+
+                <div class="action-buttons">
+
+                    <button
+                        class="action-btn"
+                        onclick="copyArticleText()"
+                    >
+                        📋 کاپی کریں
+                    </button>
+
+                    <button
+                        id="audioPlayBtn"
+                        class="action-btn"
+                        onclick="readArticleAudio()"
+                    >
+                        🔊 آڈیو سنیں
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div id="audioPlaybackControls" class="audio-playback-controls" role="group" aria-label="Audio playback controls" hidden>
+                <button id="audioResumeBtn" type="button" disabled>Play</button>
+                <button id="audioPauseBtn" type="button" disabled>Pause</button>
+                <button id="audioStopBtn" type="button" disabled>Stop</button>
+                <span id="audioPlaybackStatus" role="status" aria-live="polite"></span>
+            </div>
+
+            <div id="modalBody" class="modal-body"></div>
+
+
+            <!-- Chatbot -->
+            <div class="chatbot-section">
+
+                <h3>
+                    🤖 اس آرٹیکل کے بارے میں AI سے سوال پوچھیں
+                </h3>
+
+                <div id="chatbox" class="chatbox">
+
+                    <div class="bot-msg">
+                        ہیلو! اس آرٹیکل کے متعلق آپ کا کیا سوال ہے؟
+                    </div>
+
+                </div>
+
+
+                <div class="chat-input-area">
+
+                    <input
+                        type="text"
+                        id="userInput"
+                        placeholder="اپنا سوال یہاں لکھیں..."
+                        aria-label="آرٹیکل کے بارے میں اپنا سوال لکھیں"
+                    >
+
+                    <button type="button" onclick="sendChatMessage()">
+                        پوچھیں
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Advertisement -->
+    <aside
+        class="adsense-box"
+        aria-label="Advertisement placeholder"
+    >
+    </aside>
+
+
+    <!-- Footer -->
+    <footer class="site-footer">
+
+        <p>
+            © 2026 آن لائن ارننگ گائیڈ۔ جملہ حقوق محفوظ ہیں۔
+        </p>
+
+        <p>
+            ای میل: markazsallerboy@gmail.com |
+            واٹس ایپ: 03248459798 |
+            سپورٹ: اتوار تا ہفتہ، صبح 7:00 سے شام 8:00 بجے تک
+        </p>
+
+        <nav class="footer-links" aria-label="قانونی معلومات">
+            <a href="disclaimer.html">ڈس کلیمر</a>
+            <a href="terms.html">شرائط و ضوابط</a>
+            <a href="privacy.html">پرائیویسی پالیسی</a>
+        </nav>
+
+    </footer>
+
+
+    <!-- Google Translate -->
+    <script>
+
+        function googleTranslateElementInit() {
+
+            if (window.google && window.google.translate) {
+
+                new google.translate.TranslateElement({
+
+                    pageLanguage: 'ur',
+
+                    includedLanguages: 'ur,en',
+
+                    autoDisplay: false
+
+                }, 'google_translate_element');
+
+            }
+
+        }
+
+
+        function changeLanguage(selectObj) {
+
+            const lang = selectObj.value;
+
+            const frame = document.querySelector('.goog-te-combo');
+
+            if (frame) {
+
+                frame.value = lang;
+
+                frame.dispatchEvent(
+                    new Event('change')
+                );
+
+            } else {
+                const currentTranslation = document.cookie
+                    .split('; ')
+                    .find(cookie => cookie.startsWith('googtrans='))
+                    ?.split('=')[1] || '';
+                const nextTranslation = `/ur/${lang}`;
+                if (currentTranslation === nextTranslation) return;
+                document.cookie =
+                    `googtrans=${nextTranslation}; path=/`;
+                window.location.reload();
+
+            }
+
+        }
+
+    </script>
+
+
+    <script
+        type="text/javascript"
+        defer
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    </script>
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"
+        crossorigin="anonymous">
+    </script>
+    <script src="site-language.js"></script>
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>

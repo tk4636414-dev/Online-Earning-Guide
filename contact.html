@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رابطہ کریں | آن لائن ارننگ گائیڈ</title>
+    <meta name="description" content="آن لائن ارننگ گائیڈ سے سوال، فیڈبیک یا تعاون کے لیے رابطہ کریں۔">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="glass-header">
+        <a class="logo" href="/">
+            <img src="https://i.ibb.co/8ndQzzL6/logo.png" alt="Online Earning Guide Logo">
+            <span class="brand-title">آن لائن ارننگ گائیڈ PK</span>
+        </a>
+        <button id="menuToggle" class="menu-toggle" type="button" aria-label="مینو کھولیں" aria-controls="siteNavigation" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="siteNavigation" class="nav-links">
+            <button class="nav-drawer-close" type="button" aria-label="مینو بند کریں">✕</button>
+            <div class="primary-links">
+                <a href="index.html">ہوم</a>
+                <a href="about.html">ہم بارے میں</a>
+                <a href="contact.html" class="active">رابطہ</a>
+            </div>
+            <div class="header-actions">
+              <div class="translator-container">
+                <select id="languageSelect" onchange="changeLanguage(this)" aria-label="زبان منتخب کریں">
+                    <option value="ur">اردو (Urdu)</option>
+                    <option value="en">English</option>
+                </select>
+                <div id="google_translate_element" style="display: none;"></div>
+              </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        <section class="hero-section">
+            <div class="hero-badge">📩 ہم سے رابطہ کریں</div>
+            <h1 class="main-title">ہم سے رابطہ کریں</h1>
+            <p class="hero-subtitle">سوالات، فیڈ بیک، یا تعاون کے لیے ہمارے ساتھ رابطہ کریں</p>
+        </section>
+
+        <section class="page-card contact-layout">
+            <div class="page-section">
+                <h2>رابطے کی معلومات</h2>
+                <p><strong>ای میل:</strong> markazsallerboy@gmail.com</p>
+                <p><strong>ہاتف / واٹس ایپ:</strong> 03248459798</p>
+                <p><strong>مقام:</strong> پاکستان</p>
+                <p><strong>سپورٹ گھنٹے:</strong> اتوار تا ہفتہ، صبح 7:00 سے شام 8:00 بجے تک</p>
+            </div>
+
+            <div class="page-section">
+                <h2>پیغام بھیجیں</h2>
+                <form id="contact-form" class="contact-form">
+                    <label>نام
+                        <input name="name" type="text" placeholder="اپنا نام درج کریں" maxlength="100" required>
+                    </label>
+                    <label>ای میل
+                        <input name="email" type="email" placeholder="markazsallerboy@gmail.com" maxlength="254" required>
+                    </label>
+                    <label>عنوان
+                        <input name="subject" type="text" placeholder="پیغام کا موضوع" maxlength="180" required>
+                    </label>
+                    <label>پیغام
+                        <textarea name="message" rows="6" placeholder="آپ کا پیغام یہاں لکھیں..." maxlength="5000" required></textarea>
+                    </label>
+                    <p id="contact-status" class="contact-status" role="status" aria-live="polite" hidden></p>
+                    <button type="submit" class="action-btn">پیغام بھیجیں</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <aside class="adsense-box" aria-label="Advertisement placeholder"></aside>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 آن لائن ارننگ گائیڈ. جملہ حقوق محفوظ ہیں۔</p>
+        <nav class="footer-links" aria-label="قانونی معلومات">
+            <a href="disclaimer.html">ڈس کلیمر</a>
+            <a href="terms.html">شرائط و ضوابط</a>
+            <a href="privacy.html">پرائیویسی پالیسی</a>
+        </nav>
+    </footer>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            if (window.google && window.google.translate) {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'ur',
+                    includedLanguages: 'ur,en',
+                    autoDisplay: false
+                }, 'google_translate_element');
+            }
+        }
+
+        function changeLanguage(selectObj) {
+            const lang = selectObj.value;
+            const frame = document.querySelector('.goog-te-combo');
+            if (frame) {
+                frame.value = lang;
+                frame.dispatchEvent(new Event('change'));
+            } else {
+                const currentTranslation = document.cookie
+                    .split('; ')
+                    .find(cookie => cookie.startsWith('googtrans='))
+                    ?.split('=')[1] || '';
+                const nextTranslation = `/ur/${lang}`;
+                if (currentTranslation === nextTranslation) return;
+                document.cookie = `googtrans=${nextTranslation}; path=/`;
+                window.location.reload();
+            }
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
+    <script src="site-language.js"></script>
+    <script>
+        const contactForm = document.getElementById("contact-form");
+        const contactStatus = document.getElementById("contact-status");
+        const contactSubmitButton = contactForm?.querySelector("button[type=submit]");
+
+        contactForm?.addEventListener("submit", async event => {
+            event.preventDefault();
+
+            contactStatus.hidden = false;
+            contactStatus.className = "contact-status";
+            contactStatus.textContent = "پیغام بھیجا جا رہا ہے...";
+            contactSubmitButton.disabled = true;
+
+            try {
+                const response = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(
+                        Object.fromEntries(new FormData(contactForm))
+                    )
+                });
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(result.error || "پیغام بھیجا نہیں جا سکا۔");
+                }
+
+                contactStatus.className = "contact-status success";
+                contactStatus.textContent = result.message;
+                contactForm.reset();
+            } catch (error) {
+                contactStatus.className = "contact-status error";
+                contactStatus.textContent = error.message || "رابطہ سروس دستیاب نہیں ہے۔";
+            } finally {
+                contactSubmitButton.disabled = false;
+            }
+        });
+    </script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

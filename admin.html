@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Admin Control Panel | Online Earning Guide</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div id="toast-region" class="toast-region" aria-live="polite"></div>
+
+    <!-- 0. Auth Verification Loading Spinner (Added cleanly at the top) -->
+    <div id="loadingSpinner" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; font-family: sans-serif; background-color: #0f172a; color: #fff; position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;">
+        <h2>Verifying Admin Access...</h2>
+        <p style="color: #94a3b8;">Kripya intazar karein, security check chal raha hai...</p>
+    </div>
+
+    <!-- 1. Login Screen Container (Initially hidden until auth check finishes) -->
+    <main id="login-screen" class="login-screen" style="display: none">
+        <section class="login-card">
+            <p class="eyebrow">Online Earning Guide</p>
+            <h1>Admin Control Panel</h1>
+            <p>Sign in with an authorized Firebase admin account.</p>
+            <p id="access-status" role="status" aria-live="polite">Checking access...</p>
+            <button id="admin-login" class="button button-primary" type="button">Sign in with Google</button>
+            <p id="login-error" class="form-error" role="alert" hidden></p>
+        </section>
+    </main>
+
+    <!-- 2. Main Admin Workspace (Default Hidden) -->
+    <div id="admin-app" class="admin-app" hidden style="display: none">
+        <aside class="sidebar">
+            <div class="brand-block">
+                <span class="brand-mark">OE</span>
+                <div><strong>Online Earning Guide</strong><small>Admin workspace</small></div>
+            </div>
+            <nav class="main-nav" aria-label="Admin navigation">
+                <button class="nav-item active" data-view="dashboard">Dashboard</button>
+                <button class="nav-item" data-view="articles">Articles</button>
+                <button class="nav-item" data-view="users">Users</button>
+                <button class="nav-item" data-view="messages">Messages</button>
+                <button class="nav-item" data-view="audit">Audit trail</button>
+                <button class="nav-item" data-view="settings">Site settings</button>
+            </nav>
+            <div class="sidebar-footer"><span id="session-clock">Session active</span><button id="admin-logout" class="button button-ghost" type="button">Sign out</button></div>
+        </aside>
+
+        <section class="workspace">
+            <header class="topbar">
+                <div><p class="eyebrow">Control center</p><h2 id="view-title">Dashboard</h2></div>
+                <div class="admin-identity"><span id="admin-email">Checking access...</span><span class="admin-badge">Admin</span></div>
+            </header>
+
+            <section id="view-dashboard" class="view-panel active-view">
+                <div class="page-heading"><div><p class="eyebrow">Live overview</p><h1>Good work starts here.</h1></div><button class="button button-primary" data-open-editor="new">Create article</button></div>
+                <div class="stat-grid">
+                    <article class="stat-card"><span>Total articles</span><strong id="stat-articles">0</strong><small>All articles, including drafts</small></article>
+                    <article class="stat-card"><span>Active users</span><strong id="stat-active-users">0</strong><small>Seen in the last 5 minutes</small></article>
+                    <article class="stat-card" data-view-target="users"><span>Registered users</span><strong id="stat-users">0</strong><small>Firebase Auth profiles</small></article>
+                    <article class="stat-card"><span>Site visits</span><strong id="stat-visits">0</strong><small>Recorded page visits</small></article>
+                </div>
+                <div class="dashboard-grid">
+                    <article class="panel-card"><div class="panel-heading"><div><p class="eyebrow">Shortcuts</p><h3>Quick actions</h3></div></div><div class="shortcut-grid"><button class="shortcut" data-open-editor="new"><strong>New article</strong><span>Draft or publish</span></button><button class="shortcut" data-view-target="users"><strong>Manage users</strong><span>Open live directory</span></button><button class="shortcut" data-view-target="messages"><strong>Send message</strong><span>Reach a registered user</span></button><button class="shortcut" data-view-target="settings"><strong>Site settings</strong><span>Metadata and alerts</span></button></div></article>
+                    <article class="panel-card"><div class="panel-heading"><div><p class="eyebrow">Recent activity</p><h3>Admin audit trail</h3></div><button class="text-button" data-view-target="audit">View all</button></div><div id="recent-audit" class="activity-list"><p class="empty-state">Loading activity...</p></div></article>
+                </div>
+            </section>
+
+            <section id="view-articles" class="view-panel" hidden>
+                <div class="page-heading"><div><p class="eyebrow">Content operations</p><h1>Articles</h1></div><div><button id="refresh-articles" class="button button-ghost" type="button">Refresh list</button><button class="button button-primary" data-open-editor="new">New article</button></div></div>
+                <div class="toolbar"><input id="article-search" type="search" placeholder="Search title, category, or tags" aria-label="Search articles"><select id="article-filter" aria-label="Filter articles"><option value="all">All statuses</option><option value="published">Published</option><option value="draft">Drafts</option></select></div>
+                <div id="article-list" class="article-admin-list"><p class="empty-state">Loading articles...</p></div>
+                <button id="load-more-articles" class="button button-ghost" type="button" hidden>Load more articles</button>
+            </section>
+
+            <section id="view-users" class="view-panel" hidden>
+                <div class="page-heading"><div><p class="eyebrow">People and presence</p><h1>Users</h1></div><button id="refresh-users" class="button button-ghost" type="button">Refresh list</button></div>
+                <div class="toolbar"><input id="user-search" type="search" placeholder="Search users by name or email" aria-label="Search users"><select id="user-filter" aria-label="Filter users"><option value="all">All users</option><option value="active">Active now</option><option value="admin">Admins</option></select></div>
+                
+                <!-- Pending Subscription Requests Container -->
+                <div id="subscription-requests-list" style="margin-bottom: 20px;"></div>
+
+                <div class="management-grid">
+                    <form id="subscription-form" class="panel-card form-card"><h3>Provision subscription</h3><label>User Gmail<input id="subscription-email" type="email" placeholder="user@gmail.com" required></label><label>JazzCash transaction ID<input id="subscription-tid" maxlength="80" required></label><div class="form-row"><label>Amount paid<input id="subscription-amount" type="number" min="0" step="0.01" required></label><label>Custom discount<input id="subscription-discount" type="number" min="0" step="0.01" value="0"></label></div><label>Duration<select id="subscription-days"><option value="15">15 days</option><option value="30" selected>30 days</option><option value="90">90 days</option><option value="365">1 year</option><option value="1095">3 years</option></select></label><button class="button button-primary" type="submit">Activate subscription</button></form>
+                    <form id="task-form" class="panel-card form-card"><h3>Assign task or reward</h3><label>User Gmail<input id="task-email" type="email" placeholder="user@gmail.com" required></label><label>Task or reward<textarea id="task-message" rows="5" maxlength="2000" required></textarea></label><label>Reward label<input id="task-reward" maxlength="160" placeholder="Optional reward"></label><button class="button button-primary" type="submit">Save for user</button></form>
+                </div>
+                <div id="user-list" class="user-list"><p class="empty-state">Loading users...</p></div>
+                <button id="load-more-users" class="button button-ghost" type="button" hidden>Load more users</button>
+            </section>
+
+            <section id="view-messages" class="view-panel" hidden>
+                <div class="page-heading"><div><p class="eyebrow">Communication center</p><h1>Direct messages</h1></div></div>
+                <div class="message-layout"><form id="message-form" class="panel-card form-card"><h3>Send a branded message</h3><label>Find recipient by email<input id="message-recipient-search" type="search" autocomplete="off" aria-label="Search recipients by email"></label><label>Recipient<select id="message-recipient" required><option value="">Search by email first</option></select></label><label>Subject<input id="message-subject" maxlength="160" required></label><label>Message<textarea id="message-body" rows="7" maxlength="4000" required></textarea></label><button class="button button-primary" type="submit">Send from Online Earning Guide</button></form><article class="panel-card"><div class="panel-heading"><div><p class="eyebrow">Communication log</p><h3>Recent messages</h3></div><button id="refresh-messages" class="text-button" type="button">Refresh</button></div><div id="message-log" class="activity-list"><p class="empty-state">Loading messages...</p></div><button id="load-more-messages" class="button button-ghost" type="button" hidden>Load more messages</button></article></div>
+            </section>
+
+            <section id="view-audit" class="view-panel" hidden>
+                <div class="page-heading"><div><p class="eyebrow">Accountability</p><h1>Audit trail</h1></div><button id="refresh-audit" class="button button-ghost" type="button">Refresh</button></div>
+                <div id="audit-list" class="panel-card activity-list"><p class="empty-state">Loading audit trail...</p></div>
+                <button id="load-more-audit" class="button button-ghost" type="button" hidden>Load more activity</button>
+            </section>
+
+            <section id="view-settings" class="view-panel" hidden>
+                <div class="page-heading"><div><p class="eyebrow">Configuration</p><h1>Site settings</h1></div></div>
+                <form id="settings-form" class="panel-card form-card settings-form"><h3>Public metadata</h3><label>Site title<input id="setting-title" maxlength="120" required></label><label>Site description<textarea id="setting-description" rows="4" maxlength="500"></textarea></label><label>Contact notification email<input id="setting-contact-email" type="email" maxlength="254"></label><label>Default subscription price<input id="setting-subscription-price" type="number" min="0" step="0.01" placeholder="0"></label><label>Global announcement<textarea id="setting-announcement" rows="3" maxlength="300" placeholder="Message shown across the website"></textarea></label><fieldset><legend>Feature toggles</legend><label class="toggle-row"><input id="setting-feature-chat" type="checkbox"><span>AI chat</span></label><label class="toggle-row"><input id="setting-feature-subscription" type="checkbox"><span>Subscription upsell</span></label><label class="toggle-row"><input id="setting-feature-articles" type="checkbox"><span>Articles</span></label></fieldset><label class="toggle-row"><input id="setting-contact-alerts" type="checkbox"><span>Enable contact submission alerts</span></label><label class="toggle-row"><input id="setting-signup-alerts" type="checkbox"><span>Enable new-user signup alerts</span></label><button class="button button-primary" type="submit">Save settings</button></form>
+            </section>
+        </section>
+    </div>
+
+    <dialog id="article-dialog" class="article-dialog"><form id="article-form" method="dialog" class="form-card"><div class="dialog-heading"><div><p class="eyebrow">Content editor</p><h2 id="article-dialog-title">New article</h2></div><button id="close-editor" class="icon-button" type="button" aria-label="Close editor">&times;</button></div><input id="article-id" type="hidden"><label>Title<input id="article-title" maxlength="180" required></label><div class="form-row"><label>Category<input id="article-category" maxlength="80" required></label><label>Tags<input id="article-tags" maxlength="240" placeholder="freelancing, skills"></label></div><label>Description<textarea id="article-description" rows="3" maxlength="500"></textarea></label><label>Content<textarea id="article-content" rows="14" required></textarea></label><label>Featured image<input id="article-image" type="file" accept="image/jpeg,image/png,image/webp"></label><div id="current-image" class="current-image" hidden></div><label>Status<select id="article-status"><option value="draft">Save as draft</option><option value="published">Publish now</option></select></label><div class="dialog-actions"><button id="cancel-editor" class="button button-ghost" type="button">Cancel</button><button class="button button-primary" type="submit">Save article</button></div></form></dialog>
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
